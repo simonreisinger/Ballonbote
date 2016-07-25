@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Ballonbote</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_video">VideoActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_setiings">SetiingsActivity</string>
+    <string name="title_activity_highscore">HighscoreActivity</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="Start">Start</string>
+    <string name="Settings">Settings</string>
+    <string name="username">Username</string>
+    <string name="score">Score</string>
+    <string name="Delete">Delete</string>
+    <string name="nameDefault">Ballonbote</string>
+    <string name="nameInputHint">Type in your Name..</string>
+    <string name="helpTextTitle">How to play:</string>
+    <string name="helpText">Goal of the Game is to get as far as posible. The ballon is controlled by wiping a finger up and down or alternatively with tilting the device up and down.
+        You have to deliver post by landing at the platform of each house. For landing you get a bonus. At each platform the level and game speed increases. If you crash into any obstacle or the ground you destroy your ballon.
+        So you will lose your points since the last platform and have to repeat from there with one of your remaining ballons. Game over is when you have no remaining ballons.</string>
+    <string name="highscore">Highscore</string>
+    <string name="gameover">Game Over</string>
+
+
+    <!--Colors-->
+    <color name="white">#FFFFFF</color>
+    <color name="firebrick1">#FF3030</color>
+</resources>

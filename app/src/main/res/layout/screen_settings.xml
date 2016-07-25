@@ -1,0 +1,94 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:orientation="vertical"
+    android:background="#A0FFFFFF"
+    android:id="@+id/boxSettings"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#00FFFFFF"
+            android:id="@+id/increaseLifes"
+            android:onClick="increaseLifes"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/muteVolumeButton"
+            android:onClick="changeVolumeGame"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/volume"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:visibility="visible"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playButtonContinue"
+            android:layout_centerHorizontal="true"
+            android:onClick="continueGame"
+            android:background="@drawable/play"
+            android:layout_marginLeft="50dp"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/controlGameButton"
+            android:onClick="changeControlGame"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/controltilt"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="50dp"
+            android:visibility="visible"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/increaseGameSpeedManual"
+            android:onClick="increaseGameSpeedManual"
+            android:background="#00FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/helpTextTitle"
+        android:textAlignment="center"
+        android:id="@+id/helpTextTitle" />
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/helpText"
+        android:textAlignment="center"
+        android:id="@+id/helpText" />
+
+</LinearLayout>

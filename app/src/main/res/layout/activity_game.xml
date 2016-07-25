@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="at.ac.tuwien.pointnerreisinger.ballonbote.GameActivity">
+
+    <at.ac.tuwien.pointnerreisinger.ballonbote.GameSurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawing_area"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:id="@+id/pauseButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/pause"
+        android:onClick="pause"
+        android:layout_margin="10dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:id="@+id/packageDeliver1"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="1"
+        android:src="@drawable/packagedeliver1"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:id="@+id/packageDeliver2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="1"
+        android:src="@drawable/packagedeliver2"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40dp"
+        android:text="Level 1"
+        android:id="@+id/playButtonStartLevelText"
+        android:layout_above="@+id/playButtonStart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/playButtonStart"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="play"
+        android:background="@drawable/play"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/restartButton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="restartFromLastPlatform"
+        android:background="@drawable/restart"
+        android:visibility="gone"/>
+
+
+    <include
+        layout="@layout/screen_gameover"
+        android:id="@+id/gameoverMenu"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/screen_settings"
+        android:id="@+id/pauseMenu"
+        android:visibility="gone" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16dp"
+        android:text="Level: 1 Score: 0"
+        android:id="@+id/textLevelScore"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progressBar"
+        android:indeterminate="false"
+        android:visibility="visible" />
+
+
+</RelativeLayout>
