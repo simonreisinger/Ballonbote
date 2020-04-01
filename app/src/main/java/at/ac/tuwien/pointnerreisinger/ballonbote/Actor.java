@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 /**
  * Provides an actor for the user to play with
+ *
  * @author Michael Pointner
  */
 public class Actor extends MoveableObject {
@@ -24,15 +25,22 @@ public class Actor extends MoveableObject {
     private static Box boundingBox;
     private static Actor lastSameObject;
 
-    /** The rectangle containing the sprite animation */
+    /**
+     * The rectangle containing the sprite animation
+     */
     private Rect sourceRect;
-    /** An frame's width of the sprite */
+    /**
+     * An frame's width of the sprite
+     */
     private int frameWidth;
-    /** An frame's height in the sprite */
+    /**
+     * An frame's height in the sprite
+     */
     private int frameHeight;
 
     /**
      * Creates an object of Actor
+     *
      * @author Michael Pointner
      */
     public Actor() {
@@ -41,13 +49,14 @@ public class Actor extends MoveableObject {
 
         this.frameWidth = image.getWidth();
         this.frameHeight = image.getHeight();
-        this.sourceRect = new Rect(0,0,frameWidth, frameHeight);
+        this.sourceRect = new Rect(0, 0, frameWidth, frameHeight);
 
         lastSameObject = this;
     }
 
     /**
      * Loads the image for this class
+     *
      * @param view GameSurfaceView for the image loading
      * @author Michael Pointner
      */
@@ -64,16 +73,18 @@ public class Actor extends MoveableObject {
 
     /**
      * Creates the bounding boxes
+     *
      * @author Simon Reisinger
      */
     public static void loadBoundingBox() {
-        if(boundingBox == null) {
+        if (boundingBox == null) {
             boundingBox = new Box(image, 7);
         }
     }
 
     /**
      * Returns the last created object of this class
+     *
      * @return Last created object of this class
      * @author Michael Pointner
      */
@@ -83,6 +94,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Updates the X coordinate
+     *
      * @author Michael Pointner
      */
     @Override
@@ -97,22 +109,23 @@ public class Actor extends MoveableObject {
 
     /**
      * Updates the Y coordinate in respect to the user input
+     *
      * @author Michael Pointner
      */
     @Override
     protected void updateY(float tpf) {
         GameLoop loop = GameSurfaceView.getLoop();
-        if(!loop.getRunningWorld()) return;
+        if (!loop.getRunningWorld()) return;
         gradient += userinputGradient * tpf;
-        if(gradient > gradientMax) gradient = gradientMax;
-        if(gradient < -gradientMax) gradient = -gradientMax;
+        if (gradient > gradientMax) gradient = gradientMax;
+        if (gradient < -gradientMax) gradient = -gradientMax;
 
         y += gradient * 10f * loop.getGameSpeed();
-        if(y < maxY) {
+        if (y < maxY) {
             y = maxY;
             gradient = 0;
         }
-        if(y > minY - destHeight) {
+        if (y > minY - destHeight) {
             y = minY - destHeight;
             loop.setStopped(true);
         }
@@ -120,26 +133,28 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the minimum distance the actor needs to change a nivel of height
+     *
      * @return minimum distance
      * @author Michael Pointner
      */
-	public float minChangeNivelX() {
-		return 0.2f;
-	}
+    public float minChangeNivelX() {
+        return 0.2f;
+    }
 
     /**
      * Sets the user input gradient
+     *
      * @param userinputGradient User input gradient
      * @author Michael Pointner
      */
     public void setUserinputGradient(float userinputGradient) {
         GameLoop loop = GameSurfaceView.getLoop();
-        if(loop.getLanded()) {
+        if (loop.getLanded()) {
 
             userinputGradient = -0.01f;
             loop.setLanded(false);
         }
-        if(loop.getPaused()) {
+        if (loop.getPaused()) {
             loop.setPaused(false);
         }
         this.userinputGradient = userinputGradient;
@@ -147,6 +162,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Sets the gradient of the actors altitude
+     *
      * @param gradient Gradient of the altitude
      * @author Michael Pointner
      */
@@ -157,14 +173,15 @@ public class Actor extends MoveableObject {
 
     /**
      * Sets the actors status to landed
+     *
      * @author Michael Pointner
      */
     public void landing(Platform platform) {
         GameLoop loop = GameSurfaceView.getLoop();
-        if(!platform.getPlatformLanded() && !loop.getLevelIncreased()) {
+        if (!platform.getPlatformLanded() && !loop.getLevelIncreased()) {
             loop.displayPackageDeliver(true);
 
-            if(!loop.getLanded()) {
+            if (!loop.getLanded()) {
                 loop.increaseLevel(true);
             }
 
@@ -181,6 +198,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the destination height in percentage
+     *
      * @return destination height in percentage
      * @author Simon Reisinger
      */
@@ -191,6 +209,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the destination width in percentage
+     *
      * @return destination width in percentage
      * @author Simon Reisinger
      */
@@ -201,6 +220,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the toleranz destination width in percentage
+     *
      * @return toleranz destination width in percentage
      * @author Michael Pointner
      */
@@ -210,6 +230,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the image of this class
+     *
      * @return Image
      * @author Simon Reisinger
      */
@@ -220,6 +241,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the source rectangle of this class
+     *
      * @return Source rectangle
      * @author Simon Reisinger
      */
@@ -230,14 +252,17 @@ public class Actor extends MoveableObject {
 
     /**
      * Updates the image if it has a animation
+     *
      * @param tpf Times per frame
      * @author Simon Reisinger
      */
     @Override
-    protected void updateImage(float tpf) {}
+    protected void updateImage(float tpf) {
+    }
 
     /**
      * Returns the current bounding box
+     *
      * @return current bounding box
      * @author Simon Reisinger
      */
@@ -248,6 +273,7 @@ public class Actor extends MoveableObject {
 
     /**
      * Returns the velocity of the object
+     *
      * @return velocity
      * @author Simon Reisinger
      */

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import at.ac.tuwien.pointnerreisinger.ballonbote.ScoreContract.ScoreEntry;
 
 /**
  * Access Point to the database
+ *
  * @author Michael Pointner
  */
 public class MySQLiteHelper extends SQLiteOpenHelper {
@@ -16,14 +18,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "ScoreGame.db";
 
     private final String SQL_CREATE_ENTRIES = "CREATE TABLE IF NOT EXISTS " + ScoreEntry.TABLE_NAME +
-                                " (" + ScoreEntry._ID + " " + ScoreEntry.COLUMN_TYPE_ID + " autoincrement," +
-                                ScoreEntry.COLUMN_NAME_USERNAME + " " + ScoreEntry.COLUMN_TYPE_USERNAME + "," +
-                                ScoreEntry.COLUMN_NAME_SCORE + " " + ScoreEntry.COLUMN_TYPE_SCORE + ");";
+            " (" + ScoreEntry._ID + " " + ScoreEntry.COLUMN_TYPE_ID + " autoincrement," +
+            ScoreEntry.COLUMN_NAME_USERNAME + " " + ScoreEntry.COLUMN_TYPE_USERNAME + "," +
+            ScoreEntry.COLUMN_NAME_SCORE + " " + ScoreEntry.COLUMN_TYPE_SCORE + ");";
 
     private final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + ScoreEntry.TABLE_NAME;
 
     /**
      * Initializes the MySQLiteHelper
+     *
      * @param context Context
      * @author Michael Pointner
      */
@@ -33,6 +36,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * Wird beim ersten DB Zugriff aufgerufen
+     *
      * @param db SQLiteDatabase
      * @author Michael Pointner
      */
@@ -44,7 +48,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * Updates the database
-     * @param db SQLiteDatabase
+     *
+     * @param db         SQLiteDatabase
      * @param oldVersion Old version
      * @param newVersion New version
      * @author Michael Pointner
@@ -59,6 +64,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * Drops the table
+     *
      * @param db SQLiteDatabase
      * @author Michael Pointner
      */

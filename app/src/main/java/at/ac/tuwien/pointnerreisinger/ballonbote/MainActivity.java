@@ -1,18 +1,18 @@
 package at.ac.tuwien.pointnerreisinger.ballonbote;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * Provides a Main Menu to the user
+ *
  * @author Simon Reisinger
  */
 public class MainActivity extends AppCompatActivity {
@@ -22,8 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Creates the class
-     * @author Simon Reisinger
+     *
      * @param savedInstanceState last state of the activity
+     * @author Simon Reisinger
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Opens the game
+     *
      * @param view View
      * @author Simon Reisinger
      */
     public void openGame(View view) {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.pauseMenu);
-        if(linearLayout.getVisibility() == View.GONE) {
+        if (linearLayout.getVisibility() == View.GONE) {
             Intent intent = new Intent(MainActivity.this, GameActivity.class);
             startActivity(intent);
         }
@@ -56,12 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Opens the settings
+     *
      * @param view View
      * @author Simon Reisinger
      */
     public void openSettings(View view) {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.pauseMenu);
-        if(linearLayout.getVisibility() == View.GONE) {
+        if (linearLayout.getVisibility() == View.GONE) {
             initVolumeGame();
             initControlGame();
             linearLayout.setVisibility(View.VISIBLE);
@@ -71,12 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Opens the highscore
+     *
      * @param view View
      * @author Simon Reisinger
      */
     public void openHighscore(View view) {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.pauseMenu);
-        if(linearLayout.getVisibility() == View.GONE) {
+        if (linearLayout.getVisibility() == View.GONE) {
             Intent intent = new Intent(MainActivity.this, HighscoreActivity.class);
             startActivity(intent);
         }
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Continues the game
+     *
      * @param view View
      * @author Simon Reisinger
      */
@@ -94,11 +99,12 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Changes the volume status of the game
+     *
      * @param view View
      * @author Simon Reisinger
      */
     public void changeVolumeGame(View view) {
-        if(GameLoop.getVolume() == GameLoop.VolumeOn) {
+        if (GameLoop.getVolume() == GameLoop.VolumeOn) {
             muteVolumeButton.setBackgroundResource(R.drawable.mute);
             GameLoop.setVolume(GameLoop.VolumeMute);
         } else {
@@ -109,10 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Initializes the volume button
+     *
      * @author Simon Reisinger
      */
     public void initVolumeGame() {
-        if(GameLoop.getVolume() == GameLoop.VolumeOn) {
+        if (GameLoop.getVolume() == GameLoop.VolumeOn) {
             muteVolumeButton.setBackgroundResource(R.drawable.volume);
         } else {
             muteVolumeButton.setBackgroundResource(R.drawable.mute);
@@ -121,11 +128,12 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Changes the control status of the game
+     *
      * @param view View
      * @author Simon Reisinger
      */
     public void changeControlGame(View view) {
-        if(GameLoop.getControl() == GameLoop.ControlFinger) {
+        if (GameLoop.getControl() == GameLoop.ControlFinger) {
             controlGameButton.setBackgroundResource(R.drawable.controltilt);
             GameLoop.setControl(GameLoop.ControlTilt);
         } else {
@@ -136,14 +144,34 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Initializes the control button
+     *
      * @author Simon Reisinger
      */
     public void initControlGame() {
-        if(GameLoop.getControl() == GameLoop.ControlFinger) {
+        if (GameLoop.getControl() == GameLoop.ControlFinger) {
             controlGameButton.setBackgroundResource(R.drawable.controlfinger);
         } else {
             controlGameButton.setBackgroundResource(R.drawable.controltilt);
         }
+    }
+
+    public void onDestroy() {
+        System.out.println("Fuck you all");
+
+        super.onDestroy();
+
+        /*
+         * Kill application when the root activity is killed.
+         */
+        super.finish();
+
+        this.finishAffinity();
+
+
+
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
+        System.exit(0);
     }
 
 }

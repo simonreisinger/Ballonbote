@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 /**
  * House next to the landing platform
+ *
  * @author Michael Pointner
  */
 public class House extends Obstacle {
@@ -16,30 +17,40 @@ public class House extends Obstacle {
     private static Box boundingBox;
     private static House lastSameObject;
 
-    /** The rectangle containing the sprite animation */
+    /**
+     * The rectangle containing the sprite animation
+     */
     private Rect sourceRect;
-    /** The current frame in use */
+    /**
+     * The current frame in use
+     */
     private float currentFrame;
-    /** An frame's width of the sprite */
+    /**
+     * An frame's width of the sprite
+     */
     private int frameWidth;
-    /** An frame's height in the sprite */
+    /**
+     * An frame's height in the sprite
+     */
     private int frameHeight;
 
     /**
      * Creates an object of Actor
+     *
      * @author Simon Reisinger
      */
     private House() {
         y = 0.77f;
         this.frameWidth = image.getWidth();
         this.frameHeight = image.getHeight();
-        this.sourceRect = new Rect(0,0,frameWidth, frameHeight);
+        this.sourceRect = new Rect(0, 0, frameWidth, frameHeight);
 
         lastSameObject = this;
     }
 
     /**
      * Creates an object of Actor
+     *
      * @param x X coordinate of this object
      * @author Simon Reisinger
      */
@@ -51,6 +62,7 @@ public class House extends Obstacle {
 
     /**
      * Resets the values of this class
+     *
      * @author Michael Pointner
      */
     public static void resetValues() {
@@ -59,11 +71,12 @@ public class House extends Obstacle {
 
     /**
      * Loads the image for this class
+     *
      * @param view GameSurfaceView for the loading of the image
      * @author Simon Reisinger
      */
     public static void loadImage(GameSurfaceView view) {
-        if(image == null) {
+        if (image == null) {
             orgImage = BitmapFactory.decodeResource(view.getResources(), R.drawable.house);
 
             destHeight = 0.15f;
@@ -77,16 +90,18 @@ public class House extends Obstacle {
 
     /**
      * Loads the bounding box of this class
+     *
      * @author Simon Reisinger
      */
     public static void loadBoundingBox() {
-        if(boundingBox == null) {
+        if (boundingBox == null) {
             boundingBox = new Box(image, 6);
         }
     }
 
     /**
      * Returns the last object of this class
+     *
      * @return Last object of this class
      * @author Michael Pointner
      */
@@ -96,6 +111,7 @@ public class House extends Obstacle {
 
     /**
      * Returns the destination height of this object
+     *
      * @return Destination height of this object
      * @author Simon Reisinger
      */
@@ -106,6 +122,7 @@ public class House extends Obstacle {
 
     /**
      * Returns the destination width of this object
+     *
      * @return Destination width of this object
      * @author Simon Reisinger
      */
@@ -116,6 +133,7 @@ public class House extends Obstacle {
 
     /**
      * Returns the image of this class
+     *
      * @return Image of this class
      * @author Simon Reisinger
      */
@@ -126,6 +144,7 @@ public class House extends Obstacle {
 
     /**
      * Returns the source rectangle
+     *
      * @return Source rectangle
      * @author Simon Reisinger
      */
@@ -136,14 +155,17 @@ public class House extends Obstacle {
 
     /**
      * Updates the image in respect to the animation
+     *
      * @param tpf Time per frame
      * @author Simon Reisinger
      */
     @Override
-    protected void updateImage(float tpf) {}
+    protected void updateImage(float tpf) {
+    }
 
     /**
      * Returns the current bounding box
+     *
      * @return Current bounding box
      * @author Simon Reisinger
      */
@@ -154,6 +176,7 @@ public class House extends Obstacle {
 
     /**
      * Returns the velocity
+     *
      * @return velocity
      * @author Simon Reisinger
      */
@@ -164,11 +187,12 @@ public class House extends Obstacle {
 
     /**
      * Returns a representation of this object
+     *
      * @return String representing this object
      * @author Michael Pointner
      */
     @Override
     public String toString() {
-        return "House "+Math.round(creationX*10f)/10f;
+        return "House " + Math.round(creationX * 10f) / 10f;
     }
 }

@@ -7,6 +7,7 @@ import android.view.SurfaceHolder;
 
 /**
  * Provides the cyclic game logic
+ *
  * @author Simon Reisinger
  */
 public class GameLoop implements Runnable {
@@ -18,45 +19,50 @@ public class GameLoop implements Runnable {
 
     /**
      * Creates the GameLoop
-     * @author Simon Reisinger
-     * @param holder Holder for the game
+     *
+     * @param holder          Holder for the game
      * @param gameSurfaceView SurfaceView for the game
+     * @author Simon Reisinger
      */
     public GameLoop(SurfaceHolder holder, GameSurfaceView gameSurfaceView) {
         this.holder = holder;
         this.view = gameSurfaceView;
     }
 
-    public boolean getRunning(){
+    public boolean getRunning() {
         return running;
     }
 
     /**
      * Changes the Game Running Status
-     * @author Simon Reisinger
+     *
      * @param running Running state
+     * @author Simon Reisinger
      */
-    public void setRunning(boolean running){
+    public void setRunning(boolean running) {
         this.running = running;
         t0 = -1;
     }
 
     /**
      * Calculates the Time passed since the last painting cycle
+     *
      * @author Simon Reisinger
      */
-    public float calcTimePerFrame(){
+    public float calcTimePerFrame() {
         //Hier ausrechnen, wie lange das
         //letzte Frame zum Zeichnen benötigt hat!
-        if(t0 == -1) t0 = System.currentTimeMillis(); // Damit die delta t = 0 ist, wenn noch kein t0 vorhanden
+        if (t0 == -1)
+            t0 = System.currentTimeMillis(); // Damit die delta t = 0 ist, wenn noch kein t0 vorhanden
         t = System.currentTimeMillis();
-        float tpf = (float)(t - t0) / 1000f;
+        float tpf = (float) (t - t0) / 1000f;
         t0 = t;
         return tpf;
     }
 
     /**
      * Calls the draw methods cyclic
+     *
      * @author Simon Reisinger
      */
     @SuppressLint("WrongCall")
@@ -66,7 +72,7 @@ public class GameLoop implements Runnable {
         Canvas c;
         running = true;
         Log.e("GameLoop", "Thread started");
-        while(running){
+        while (running) {
             //Frame-Unabhängigkeit implementieren
             tpf = calcTimePerFrame();
             //Log.e("GameLoop", "run - drawing frame, tpf="+tpf);
@@ -82,9 +88,8 @@ public class GameLoop implements Runnable {
                         view.onDraw(c);
                     }
                 }
-            } finally{
-                if(c != null)
-                {
+            } finally {
+                if (c != null) {
                     holder.unlockCanvasAndPost(c);
                 }
             }
@@ -100,13 +105,13 @@ public class GameLoop implements Runnable {
     private static boolean collisionEnabled = true;
     private static boolean landed = true;
     private static boolean paused = false;
-    private static boolean stopped  = false;
+    private static boolean stopped = false;
     public final static int ControlFinger = 0;
     public final static int ControlTilt = 1;
     private static int control = ControlFinger;
     public final static int VolumeOn = 0;
     public final static int VolumeMute = 1;
-    private static int volume = VolumeMute;
+    private static int volume = VolumeOn;
     private static float initRotation = Integer.MIN_VALUE;
 
     private static int lifesStart = 3;
@@ -129,14 +134,16 @@ public class GameLoop implements Runnable {
 
     /**
      * Updates the text of the statistics
+     *
      * @author Michael Pointner
      */
     private void updateTextLevelScore() {
-        view.activity.setTextLevelScoreInvoke(" Ballons: "+lifes+" Level: "+level+" Speed: "+Math.round(gameSpeed/gameSpeedStart*10f)/10f+"x Score: "+((int)score)+(debugEnabled && debugText!=""?" Debug: "+debugText:""));
+        view.activity.setTextLevelScoreInvoke(" Ballons: " + lifes + " Level: " + level + " Speed: " + Math.round(gameSpeed / gameSpeedStart * 10f) / 10f + "x Score: " + ((int) score) + (debugEnabled && debugText != "" ? " Debug: " + debugText : ""));
     }
 
     /**
      * Sets the Debug text
+     *
      * @param text Debug text
      * @author Michael Pointner
      */
@@ -146,6 +153,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the level increased flag
+     *
      * @author Michael Pointner
      */
     public void resetLevelIncreased() {
@@ -154,6 +162,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the values to the beginning
+     *
      * @author Michael Pointner
      */
     public static void resetValuesBeginning() {
@@ -165,6 +174,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the values the the values of the last platform
+     *
      * @author Michael Pointner
      */
     public static void resetValuesLastPlatform() {
@@ -176,6 +186,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the toleranz for the ballon width
+     *
      * @return toleranz
      * @author Michael Pointner
      */
@@ -185,6 +196,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the Gamespeed to the start value
+     *
      * @author Michael Pointner
      */
     public static void resetGameSpeed() {
@@ -193,6 +205,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Increases the Gamespeed
+     *
      * @author Michael Pointner
      */
     public void increaseGameSpeed() {
@@ -202,30 +215,33 @@ public class GameLoop implements Runnable {
 
     /**
      * Calculates the increasement on the gamespeed for the given level
+     *
      * @param level actual Level
      * @return increase value
      * @author Michael Pointner
      */
-	public static float increaseFunktion(int level) {
-		return 0.01f * (float)Math.pow(Math.E, -level/50f);
-	}
+    public static float increaseFunktion(int level) {
+        return 0.01f * (float) Math.pow(Math.E, -level / 50f);
+    }
 
     /**
      * Sums up the gamespeed for the given level
+     *
      * @param level Level
      * @return Gamespeed
      * @author Michael Pointner
      */
-	public static float sumIncreaseFunktionGameSpeed(int level) {
-		float sum = gameSpeedStart;
-		for(int x=1; x<level; x++) {
-			sum += increaseFunktion(x);
-		}
-		return sum;
-	}
+    public static float sumIncreaseFunktionGameSpeed(int level) {
+        float sum = gameSpeedStart;
+        for (int x = 1; x < level; x++) {
+            sum += increaseFunktion(x);
+        }
+        return sum;
+    }
 
     /**
      * Returns the start gamespeed
+     *
      * @return start gamespeed
      * @author Michael Pointner
      */
@@ -235,6 +251,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Increses the gamespeed manual
+     *
      * @author Michael Pointner
      */
     public static void increaseGameSpeedManual() {
@@ -244,6 +261,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the current level
+     *
      * @return current level
      * @author Michael Pointner
      */
@@ -253,6 +271,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the the level of the last platform
+     *
      * @param level Level of the last platform
      * @author Michael Pointner
      */
@@ -262,11 +281,12 @@ public class GameLoop implements Runnable {
 
     /**
      * Increases the level
+     *
      * @param isPlatform defines if the caller is a platform
      * @author Michael Pointner
      */
     public void increaseLevel(boolean isPlatform) {
-        if(!levelIncreased) {
+        if (!levelIncreased) {
             level++;
             increaseGameSpeed();
         }
@@ -275,6 +295,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns if the level is already incresed
+     *
      * @return level increased
      * @author Michael Pointner
      */
@@ -284,6 +305,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the level
+     *
      * @author Michael Pointner
      */
     public static void resetLevel() {
@@ -293,6 +315,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the lifes
+     *
      * @author Michael Pointner
      */
     public static void resetLifes() {
@@ -301,6 +324,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Increases the lifes by one
+     *
      * @author Michael Pointner
      */
     public static void increaseLifes() {
@@ -309,6 +333,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the score
+     *
      * @author Michael Pointner
      */
     public static void resetScore() {
@@ -318,6 +343,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the amount of lifes
+     *
      * @return current lifes
      * @author Michael Pointner
      */
@@ -327,14 +353,16 @@ public class GameLoop implements Runnable {
 
     /**
      * Decreases the lifes
+     *
      * @author Michael Pointner
      */
     private void decreaseLifes() {
-        lifes = lifes > 0 ? (lifes-1) : 0;
+        lifes = lifes > 0 ? (lifes - 1) : 0;
     }
 
     /**
      * Returns the Score
+     *
      * @return score
      * @author Michael Pointner
      */
@@ -344,6 +372,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the score
+     *
      * @param score Score
      * @author Michael Pointner
      */
@@ -353,6 +382,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Increases the score by the given value
+     *
      * @param incresement Increasement of the score
      * @author Michael Pointner
      */
@@ -362,6 +392,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Resets the score to the value of the last platform
+     *
      * @author Michael Pointner
      */
     public void setScoreLastPlatform() {
@@ -370,6 +401,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the score of the last platform
+     *
      * @return Score of the last platform
      * @author Michael Pointner
      */
@@ -379,6 +411,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the game landed status
+     *
      * @return Landed Landed status
      * @author Michael Pointner
      */
@@ -388,6 +421,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the game paused status
+     *
      * @return Paused status
      * @author Michael Pointner
      */
@@ -397,6 +431,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the game stopped status
+     *
      * @return Stopped status
      * @author Michael Pointner
      */
@@ -406,6 +441,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns if the world is running
+     *
      * @return World running status
      * @author Michael Pointner
      */
@@ -415,6 +451,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the current control mode
+     *
      * @return Control mode
      * @author Michael Pointner
      */
@@ -424,6 +461,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the current volume mode
+     *
      * @return Volume mode
      * @author Michael Pointner
      */
@@ -433,6 +471,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the initial rotation of the device
+     *
      * @return initial rotation of the device
      * @author Michael Pointner
      */
@@ -442,6 +481,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the initial rotation of the device
+     *
      * @param rotation Initial rotation of the device
      * @author Michael Pointner
      */
@@ -451,6 +491,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the paused status
+     *
      * @param paused Paused status
      * @author Michael Pointner
      */
@@ -462,23 +503,25 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the landed status
+     *
      * @param landed Landed status
      * @author Michael Pointner
      */
     public void setLanded(boolean landed) {
         this.landed = landed;
-        if(landed) {
+        if (landed) {
             setStopped(false);
         }
         view.activity.displayPlayButtonStartInvoke(landed, getLevelText());
         view.activity.displayPauseButtonInvoke(!landed);
-        if(!landed) {
+        if (!landed) {
             displayPackageDeliver(false);
         }
     }
 
     /**
      * Displays the package deliver window
+     *
      * @param display Display status
      * @author Michael Pointner
      */
@@ -488,32 +531,34 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the level text
+     *
      * @return Level text
      * @author Michael Pointner
      */
     public String getLevelText() {
-        return "Level "+getLevel();
+        return "Level " + getLevel();
     }
 
     /**
      * Sets the stopped status
+     *
      * @param stopped Stopped status
      * @author Michael Pointner
      */
     public void setStopped(boolean stopped) {
-        if(stopped && landed) return;
-        if(stopped == GameLoop.stopped) return;
-        if(stopped) {
+        if (stopped && landed) return;
+        if (stopped == GameLoop.stopped) return;
+        if (stopped) {
             view.activity.displayPlayButtonStartInvoke(false, getLevelText());
             view.activity.displayPauseButtonInvoke(false);
-            if(!this.stopped) {
+            if (!this.stopped) {
                 decreaseLifes();
             }
-            if(paused) {
+            if (paused) {
                 setPaused(false);
             }
         }
-        if(getLifes() > 0) {
+        if (getLifes() > 0) {
             view.activity.displayRestartButtonInvoke(stopped);
         } else {
             view.activity.displayGameOverMenuInvoke(stopped);
@@ -523,6 +568,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the game control mode
+     *
      * @param control Game control mode
      * @author Michael Pointner
      */
@@ -532,6 +578,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Sets the game volume mode
+     *
      * @param volume Game volume mode
      * @author Michael Pointner
      */
@@ -541,6 +588,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns the game speed
+     *
      * @return game speed
      * @author Michael Pointner
      */
@@ -552,6 +600,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns if debug is enabled
+     *
      * @return debug enabled
      * @author Michael Pointner
      */
@@ -561,6 +610,7 @@ public class GameLoop implements Runnable {
 
     /**
      * Returns if collision detection is enabled
+     *
      * @return collision detection enabled
      * @author Michael Pointner
      */

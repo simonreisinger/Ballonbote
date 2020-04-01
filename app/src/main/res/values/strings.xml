@@ -16,9 +16,7 @@
     <string name="nameDefault">Ballonbote</string>
     <string name="nameInputHint">Type in your Name..</string>
     <string name="helpTextTitle">How to play:</string>
-    <string name="helpText">Goal of the Game is to get as far as posible. The ballon is controlled by wiping a finger up and down or alternatively with tilting the device up and down.
-        You have to deliver post by landing at the platform of each house. For landing you get a bonus. At each platform the level and game speed increases. If you crash into any obstacle or the ground you destroy your ballon.
-        So you will lose your points since the last platform and have to repeat from there with one of your remaining ballons. Game over is when you have no remaining ballons.</string>
+    <string name="helpText">The goal of the game is to get as far as possible. The balloon is controlled by wiping a finger up and down or alternatively with tilting the device up and down. You have to deliver packages by landing at the platform of each house. For landing, you get a bonus. At each platform the level and game speed increases. If you crash into any obstacle or the ground you destroy your balloon. So you will lose your points since the last platform and have to repeat from there with one of your remaining balloons. Game over is when you have no remaining balloons.</string>
     <string name="highscore">Highscore</string>
     <string name="gameover">Game Over</string>
 

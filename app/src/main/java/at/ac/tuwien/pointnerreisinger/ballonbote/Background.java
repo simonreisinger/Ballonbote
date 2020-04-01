@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 /**
  * Provides the background for the game
+ *
  * @author Michael Pointner
  */
 public class Background extends MoveableObject {
@@ -17,15 +18,22 @@ public class Background extends MoveableObject {
     private static float destWidth; // Prozent der Bildschirmgroesse
     private static float destHeight; // Prozent der Bildschirmgroesse
 
-    /** The rectangle containing the sprite animation */
+    /**
+     * The rectangle containing the sprite animation
+     */
     private Rect sourceRect;
-    /** An frame's width of the sprite */
+    /**
+     * An frame's width of the sprite
+     */
     private int frameWidth;
-    /** An frame's height in the sprite */
+    /**
+     * An frame's height in the sprite
+     */
     private int frameHeight;
 
     /**
      * Creates an object of Background
+     *
      * @author Michael Pointner
      */
     public Background() {
@@ -33,16 +41,17 @@ public class Background extends MoveableObject {
         y = 0f;
         this.frameWidth = image.getWidth();
         this.frameHeight = image.getHeight();
-        this.sourceRect = new Rect(0,0,frameWidth, frameHeight);
+        this.sourceRect = new Rect(0, 0, frameWidth, frameHeight);
     }
 
     /**
      * Loads the image for this class
+     *
      * @param view GameSurfaceView for the loading of the image
      * @author Simon Reisinger
      */
     public static void loadImage(GameSurfaceView view) {
-        if(image == null) {
+        if (image == null) {
             orgImage = BitmapFactory.decodeResource(view.getResources(), R.drawable.background);
             destHeight = 1f;
             destWidth = 1f;
@@ -55,6 +64,7 @@ public class Background extends MoveableObject {
 
     /**
      * Returns the last object of this class
+     *
      * @return Last object
      * @author Michael Pointner
      */
@@ -64,29 +74,35 @@ public class Background extends MoveableObject {
 
     /**
      * Loads the bounding box of this class if it has one
+     *
      * @author Simon Reisinger
      */
-    public static void loadBoundingBox() {}
+    public static void loadBoundingBox() {
+    }
 
     /**
      * Overrides the onDraw method of MoveableObject to just draw an unicolor background
-     * @author Simon Reisinger
+     *
      * @param canvas Canvas to draw on
+     * @author Simon Reisinger
      */
     @Override
-    public void onDraw(Canvas canvas){
+    public void onDraw(Canvas canvas) {
         canvas.drawColor(Color.rgb(144, 193, 226));
     }
 
     /**
      * Updates the X coordinate
+     *
      * @author Simon Reisinger
      */
     @Override
-    protected void updateX(float tpf) {}
+    protected void updateX(float tpf) {
+    }
 
     /**
      * Returns the destination height of this object
+     *
      * @return destination height in precentage
      * @author Simon Reisinger
      */
@@ -97,6 +113,7 @@ public class Background extends MoveableObject {
 
     /**
      * Returns the destination width of this object
+     *
      * @return destination width in precentage
      * @author Simon Reisinger
      */
@@ -107,6 +124,7 @@ public class Background extends MoveableObject {
 
     /**
      * Returns the image of this class
+     *
      * @return Image
      * @author Simon Reisinger
      */
@@ -117,6 +135,7 @@ public class Background extends MoveableObject {
 
     /**
      * Returns the source rectangle
+     *
      * @return source rectangle
      * @author Simon Reisinger
      */
@@ -127,15 +146,18 @@ public class Background extends MoveableObject {
 
     /**
      * Updates the image if it has an animation
+     *
      * @param tpf Time per frame
      * @author Simon Reisinger
      */
     @Override
-    protected void updateImage(float tpf) {}
+    protected void updateImage(float tpf) {
+    }
 
 
     /**
      * Returns the current bounding box if it has one
+     *
      * @return current bounding box
      * @author Simon Reisinger
      */
@@ -146,6 +168,7 @@ public class Background extends MoveableObject {
 
     /**
      * Returns the velocity of this object
+     *
      * @return Velocity
      * @author Simon Reisinger
      */

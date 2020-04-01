@@ -4,12 +4,14 @@ import android.provider.BaseColumns;
 
 /**
  * A contract class is a container for constants that define names for URIs, tables, and columns.
+ *
  * @author Michael Pointner
  */
 public class ScoreContract {
 
     /**
      * Provides constants for an entry in Score table. BaseColumns interface declares _ID = "id" constant.
+     *
      * @author Michael Pointner
      */
     public static abstract class ScoreEntry implements BaseColumns {

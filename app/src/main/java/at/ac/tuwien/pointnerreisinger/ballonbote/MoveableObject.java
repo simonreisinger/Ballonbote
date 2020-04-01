@@ -5,10 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.media.audiofx.AcousticEchoCanceler;
 
 /**
  * Combines all moving Objects
+ *
  * @author Michael Pointner
  */
 public abstract class MoveableObject {
@@ -25,43 +25,48 @@ public abstract class MoveableObject {
 
     /**
      * Creates an Object of MoveableObject
+     *
      * @author Michael Pointner
      */
-    protected MoveableObject() {}
+    protected MoveableObject() {
+    }
 
     /**
      * Resizes the passed image
-     * @param orgImage Image to resize
-     * @param screenWidth Screen width
+     *
+     * @param orgImage     Image to resize
+     * @param screenWidth  Screen width
      * @param screenHeight Screen height
-     * @param destWidth Destination width in percentage
-     * @param destHeight Destination height in percentage
+     * @param destWidth    Destination width in percentage
+     * @param destHeight   Destination height in percentage
      * @return Resized image
      * @author Simon Reisinger
      */
-    public static Bitmap resizeImage(Bitmap orgImage, int screenWidth, int screenHeight, float destWidth, float destHeight){
-        int srcWidth = (int)(destWidth * (float)screenWidth);
-        int srcHeight = (int)(destHeight * (float)screenHeight);
+    public static Bitmap resizeImage(Bitmap orgImage, int screenWidth, int screenHeight, float destWidth, float destHeight) {
+        int srcWidth = (int) (destWidth * (float) screenWidth);
+        int srcHeight = (int) (destHeight * (float) screenHeight);
 
         return Bitmap.createScaledBitmap(orgImage, srcWidth, srcHeight, false);
     }
 
     /**
      * Calculates the destination width
-     * @param image Image
-     * @param screenWidth Screen width
+     *
+     * @param image        Image
+     * @param screenWidth  Screen width
      * @param screenHeight Screen height
-     * @param destHeight Destination height in percentage
+     * @param destHeight   Destination height in percentage
      * @return Calculated destination width
      * @author Simon Reisinger
      */
     public static float calcDestWidth(Bitmap image, int screenWidth, int screenHeight, float destHeight) {
-        float f = ((float)image.getWidth() / (float)image.getHeight()) * ((float)screenHeight / (float)screenWidth);
-        return destHeight*f;
+        float f = ((float) image.getWidth() / (float) image.getHeight()) * ((float) screenHeight / (float) screenWidth);
+        return destHeight * f;
     }
 
     /**
      * Updates the position of this object
+     *
      * @param tpf Time per frame
      * @author Michael Pointner
      */
@@ -69,23 +74,24 @@ public abstract class MoveableObject {
         updateX(tpf);
         updateY(tpf);
         GameLoop loop = GameSurfaceView.getLoop();
-        if(tpf != 0 && loop.getRunningWorld()) {
+        if (tpf != 0 && loop.getRunningWorld()) {
             updateImage(tpf);
         }
     }
 
     /**
      * Draws the image of the object on the scene
+     *
      * @param canvas Canvas to draw on
      * @author Michael Pointner
      */
-    public void onDraw(Canvas canvas){
-        if(x > 1 || x < -1) return;
+    public void onDraw(Canvas canvas) {
+        if (x > 1 || x < -1) return;
 
         GameLoop loop = GameSurfaceView.getLoop();
 
         Bitmap image = getImage();
-        if(image == null) {
+        if (image == null) {
             return;
         }
         float destWidth = getDestWidth();
@@ -94,16 +100,16 @@ public abstract class MoveableObject {
         float areaActorL = GameSurfaceView.getActor().getX();
         float areaActorR = areaActorL + GameSurfaceView.getActor().getDestWidth();
 
-        for(int repeatIndex=0; repeatIndex<repeat; repeatIndex++) {
+        for (int repeatIndex = 0; repeatIndex < repeat; repeatIndex++) {
             canvas.drawBitmap(image,
                     getSourceRect(),
                     new Rect(Math.round((x + destWidth * repeatIndex) * (float) canvas.getWidth()),
-                             Math.round(y * (float) canvas.getHeight()),
-                             Math.round((x + destWidth * (repeatIndex + 1)) * (float) canvas.getWidth()),
-                             Math.round((y + destHeight) * (float) canvas.getHeight())
+                            Math.round(y * (float) canvas.getHeight()),
+                            Math.round((x + destWidth * (repeatIndex + 1)) * (float) canvas.getWidth()),
+                            Math.round((y + destHeight) * (float) canvas.getHeight())
                     ), null);
 
-            if(loop.getDebug()) {
+            if (loop.getDebug()) {
                 Paint paint = new Paint();
                 paint.setColor(Color.RED);
                 paint.setStyle(Paint.Style.STROKE);
@@ -115,13 +121,14 @@ public abstract class MoveableObject {
                         paint);
             }
         }
-        if((loop.getCollision() || this instanceof Platform) && collision(canvas) && !loop.getLanded()){
+        if ((loop.getCollision() || this instanceof Platform) && collision(canvas) && !loop.getLanded()) {
             reactCollision();
         }
     }
 
     /**
      * Method checking for collisions. Should be overriden by obstacle
+     *
      * @param canvas Canvas to get the screen size
      * @return if a collision occured
      * @author Michael Pointner
@@ -132,6 +139,7 @@ public abstract class MoveableObject {
 
     /**
      * Defines the reaction to collision
+     *
      * @author Simon Reisinger
      */
     protected void reactCollision() {
@@ -141,6 +149,7 @@ public abstract class MoveableObject {
 
     /**
      * Updates the X coordinate
+     *
      * @param tpf Time per frame
      * @author Michael Pointner
      */
@@ -153,6 +162,7 @@ public abstract class MoveableObject {
 
     /**
      * Updates the Y coordinate
+     *
      * @param tpf Time per frame
      * @author Michael Pointner
      */
@@ -162,6 +172,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns if the object can be removed
+     *
      * @return Boolean indicating the removability
      * @author Michael Pointner
      */
@@ -171,6 +182,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the last object of the class
+     *
      * @return last object of the class
      * @author Michael Pointner
      */
@@ -178,6 +190,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the x coordinate of the object
+     *
      * @return x coordinate
      * @author Simon Reisinger
      */
@@ -187,6 +200,7 @@ public abstract class MoveableObject {
 
     /**
      * Sets the creation x coordinate
+     *
      * @param x Creation x coordinate
      * @author Michael Pointner
      */
@@ -196,6 +210,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the creation x
+     *
      * @return creation x
      * @author Michael Pointner
      */
@@ -205,6 +220,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the y coordinate of the object
+     *
      * @return y coordinate
      * @author Simon Reisinger
      */
@@ -214,6 +230,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the x coordinate of the right end of the object
+     *
      * @return X coordinate of the right end of the object
      * @author Michael Pointner
      */
@@ -224,6 +241,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the source width of the objects image
+     *
      * @return destination height
      * @author Simon Reisinger
      */
@@ -231,6 +249,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the destination width of the objects image
+     *
      * @return destination width
      * @author Simon Reisinger
      */
@@ -238,6 +257,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the objects image
+     *
      * @return Image
      * @author Simon Reisinger
      */
@@ -245,6 +265,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the source rectangle
+     *
      * @return Source rectangle
      * @autor Simon Reisinger
      */
@@ -252,6 +273,7 @@ public abstract class MoveableObject {
 
     /**
      * Aktuallisiert ueberall wo noetig das Bild
+     *
      * @param tpf Time per frame
      * @author Simon Reisinger
      */
@@ -259,6 +281,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the current bounding box
+     *
      * @return Current bounding box
      * @author Simon Reisinger
      */
@@ -266,6 +289,7 @@ public abstract class MoveableObject {
 
     /**
      * Returns the velocity
+     *
      * @return velocity
      * @author Simon Reisinger
      */

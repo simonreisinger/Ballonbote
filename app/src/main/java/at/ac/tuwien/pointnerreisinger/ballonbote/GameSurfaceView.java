@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.SensorEvent;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -27,15 +26,16 @@ import java.util.Random;
 
 /**
  * Provides the canvas for the game
+ *
  * @author Michael Pointner
  */
-public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
+public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Context context;
     private static GameLoop loop;
     public GameActivity activity;
 
-    public static GameLoop getLoop(){
+    public static GameLoop getLoop() {
         return loop;
     }
 
@@ -54,9 +54,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Creates the GameSurfaceView
-     * @author Michael Pointner
+     *
      * @param context Context to draw on
      * @param attrSet Some attributs
+     * @author Michael Pointner
      */
     public GameSurfaceView(Context context, AttributeSet attrSet) {
         super(context, attrSet);
@@ -65,34 +66,35 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         getHolder().addCallback(this);
         setFocusable(true);
         this.context = context;
-        activity = ((GameActivity)context);
-        if(loadBackgroundImage == null) {
+        activity = ((GameActivity) context);
+        if (loadBackgroundImage == null) {
             loadBackgroundImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.background2);
         }
     }
 
     /**
      * Starts the game
+     *
      * @author Michael Pointner
      */
     public void play() {
-        if(loop != null) {
+        if (loop != null) {
             loop.resetLevelIncreased();
-            Log.e("GameSurfaceView", "play - Paused:"+loop.getPaused()+" Landed:"+loop.getLanded()+" Stopped:"+loop.getStopped());
-            if(loop.getPaused() && loop.getLanded()) {
+            Log.e("GameSurfaceView", "play - Paused:" + loop.getPaused() + " Landed:" + loop.getLanded() + " Stopped:" + loop.getStopped());
+            if (loop.getPaused() && loop.getLanded()) {
                 Log.e("GameSurfaceView", "loop.setPaused(false)");
                 loop.setPaused(false);
             }
-            if(loop.getStopped()) {
+            if (loop.getStopped()) {
                 init();
                 loop.setStopped(false);
                 Log.e("GameSurfaceView", "loop.setStopped(false)");
             }
-            if(loop.getLifes() == 0) {
+            if (loop.getLifes() == 0) {
                 loop.setStopped(true);
             }
-            Log.e("GameSurfaceView", "play: initialized:"+initialized+" loopThread:"+loopThread+" !loop.getRunning()"+!loop.getRunning());
-            if(initialized && (loopThread == null ||!loop.getRunning())) {
+            Log.e("GameSurfaceView", "play: initialized:" + initialized + " loopThread:" + loopThread + " !loop.getRunning()" + !loop.getRunning());
+            if (initialized && (loopThread == null || !loop.getRunning())) {
                 loopThread = new Thread(loop);
                 loopThread.start();
                 Log.e("GameSurfaceView", "loopThread.start()");
@@ -102,6 +104,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Sets the game status to paused
+     *
      * @author Michael Pointner
      */
     public void pause() {
@@ -110,15 +113,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Changes the Game Running Status
+     *
      * @param running Running state
      * @author Michael Pointner
      */
     public void setRunning(boolean running) {
-        if(loop != null) loop.setRunning(running);
+        if (loop != null) loop.setRunning(running);
     }
 
     /**
      * Starts the Thread
+     *
      * @param holder Holder of the game canvas
      * @author Michael Pointner
      */
@@ -128,7 +133,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Log.e("GameSurfaceView", "surfaceCreated");
         loop = new GameLoop(holder, this);
 
-        if(!initialized) {
+        if (!initialized) {
             prepare();
             Log.e("GameSurfaceView", "preper");
         }
@@ -140,9 +145,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Changes the game size
+     *
      * @param holder Holder of the game canvas
      * @param format new format
-     * @param width new width
+     * @param width  new width
      * @param height new height
      * @author Michael Pointner
      */
@@ -152,6 +158,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Terminates the Game when the SurfaceView is destroyed
+     *
      * @param holder Surface holder
      * @author Michael Pointner
      */
@@ -163,24 +170,23 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Terminates the game
+     *
      * @author Michael Pointner
      */
-    private void endGame() {
+    public void endGame() {
         loop.setRunning(false);
-        try
-        {
-            if(loopThread != null) {
+        try {
+            if (loopThread != null) {
                 loopThread.join();
             }
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             Log.e("Error", e.getMessage());
         }
     }
 
     /**
      * Restarts the game from the last platform
+     *
      * @author Michael Pointner
      */
     public void restartFromLastPlatform() {
@@ -194,6 +200,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Resets the game from the beginning
+     *
      * @author Michael Pointner
      */
     public void restartFromBeginning() {
@@ -205,7 +212,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         loop.setStopped(false);
         loop.resetLifes();
         loop.resetGameSpeed();
-        if(loopThread == null) {
+        if (loopThread == null) {
             loopThread = new Thread(loop);
             loopThread.start();
         }
@@ -213,13 +220,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Updates the game to the new sensor value
+     *
      * @param event Sensor event
      * @author Michael Pointner
      */
     public void onSensorChanged(SensorEvent event) {
-        if(loop != null && loop.getControl() == loop.ControlTilt) {
+        if (loop != null && loop.getControl() == loop.ControlTilt) {
             float rotationY = event.values[2];
-            if(loop.getRunningWorld()) {
+            if (loop.getRunningWorld()) {
 
                 if (loop.getInitRotation() == Integer.MIN_VALUE) {
                     loop.setInitRotation(rotationY);
@@ -229,8 +237,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                 actor.setGradient(actualRotation / 1000f);
             } else {
-                if(loop.getLanded()) {
-                    loop.setInitRotation(rotationY+2);
+                if (loop.getLanded()) {
+                    loop.setInitRotation(rotationY + 2);
                 } else {
                     loop.setInitRotation(rotationY);
                 }
@@ -240,13 +248,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Executes actions for user touch inputs
+     *
      * @param e Motion Event
      * @return Action Performed
      * @author Michael Pointner
      */
     @Override
-    public boolean onTouchEvent(@NonNull MotionEvent e) {
-        if(!loop.getPaused() && !loop.getLanded()) {// && loop.getControl() == loop.ControlFinger) {
+    public boolean onTouchEvent(MotionEvent e) {
+        if (!loop.getPaused() && !loop.getLanded()) {// && loop.getControl() == loop.ControlFinger) {
             if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
                 startMovement(e.getY());
             }
@@ -262,6 +271,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Starts the movement of the finger on the screen
+     *
      * @param y Y position of the finger on the screen
      * @author Michael Pointner
      */
@@ -272,6 +282,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Updates the finger movement
+     *
      * @param y Y coordinate of the finger
      * @author Michael Pointner
      */
@@ -283,6 +294,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Ends the movement of the finger on the screen
+     *
      * @param y Y coordinate of the finger
      * @author Michael Pointner
      */
@@ -292,17 +304,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Updates the positions of the objects
+     *
      * @param tpf Time per frame
      * @author Michael Pointner
      */
     public void update(float tpf) {
         //Log.e("GameSurfaceView", "update - prepared:" + prepered);
-        if(prepered) {
+        if (prepered) {
             background.update(tpf);
             ground.update(tpf);
 
             // update Obstacles
-            if(!objectsLocked) {
+            if (!objectsLocked) {
                 Iterator<MoveableObject> iterator = objects.iterator();
                 while (iterator.hasNext()) {
                     MoveableObject obj = iterator.next();
@@ -322,13 +335,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Draw the whole scene
+     *
      * @param canvas Canvas to draw on
      * @author Michael Pointner
      */
     @Override
-    public void onDraw(Canvas canvas){
+    public void onDraw(Canvas canvas) {
         //Log.e("GameSurfaceView", "onDraw - prepared:" + prepered);
-        if(prepered) {
+        if (prepered) {
             // draw Background
             background.onDraw(canvas);
             // draw Ground
@@ -352,6 +366,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Starts the prepare worker
+     *
      * @author Michael Pointner
      */
     private void prepare() {
@@ -362,11 +377,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Prepare worker for the initial loading work
+     *
      * @author Michael Pointner
      */
     private class PrepareWorker implements Runnable {
         /**
          * Runnable method for the prepare work
+         *
          * @author Michael Pointner
          */
         @Override
@@ -377,6 +394,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Initial prepare work
+     *
      * @author Michael Pointner
      */
     private void prepareWork() {
@@ -384,7 +402,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         init();
         loadBoundingBoxes();
         activity.displayLoadingIconInvoke(false);
-        if(loop.getLifes() > 0) {
+        if (loop.getLifes() > 0) {
             activity.displayPlayButtonStartInvoke(true, loop.getLevelText());
         }
         prepered = true;
@@ -392,6 +410,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Resets the values of the game
+     *
      * @author Michael Pointner
      */
     private void resetValues() {
@@ -405,6 +424,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Loads the images of the game
+     *
      * @author Michael Pointner
      */
     private void loadImages() {
@@ -420,6 +440,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Loads the bounding boxes of the game
+     *
      * @author Michael Pointner
      */
     private void loadBoundingBoxes() {
@@ -434,6 +455,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Initialisizes all objects that are just existing once
+     *
      * @author Michael Pointner
      */
     private void init() {
@@ -442,7 +464,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         actor = new Actor();
 
         // delete all Objects
-        if(objects.size() > 0) {
+        if (objects.size() > 0) {
             for (MoveableObject obj : objects) {
                 obj.setCreationX(Float.NEGATIVE_INFINITY);
             }
@@ -459,18 +481,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Creates new objects for the game
+     *
      * @author Michael Pointner
      */
     private void createObjects() {
 
         String objString = "";
-        for(MoveableObject obj : objects) {
+        for (MoveableObject obj : objects) {
             objString += obj + " ";
         }
 
-        getLoop().setDebugText(System.currentTimeMillis()+" Objects size:" + objects.size() + " Objects: " + objString);
+        getLoop().setDebugText(System.currentTimeMillis() + " Objects size:" + objects.size() + " Objects: " + objString);
 
-        if(last == null) {
+        if (last == null) {
             initCreateObjects();
             manualGenerationCounter = 0;
         }
@@ -483,6 +506,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Creates the initial objects
+     *
      * @author Michael Pointner
      */
     private void initCreateObjects() {
@@ -509,20 +533,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     private int manualSelection = 0;
 
-    private final int manualLast2 = manualSelection %4;//BIRD;
-    private final int manualLast = (manualSelection / 4)%4;//CLOUD;
-    private final int manualNow = (manualSelection / 16)%4;//MOUNTAIN;
+    private final int manualLast2 = manualSelection % 4;//BIRD;
+    private final int manualLast = (manualSelection / 4) % 4;//CLOUD;
+    private final int manualNow = (manualSelection / 16) % 4;//MOUNTAIN;
     private final int manualSpace = PLATFORM;
 
     private int[] manualArray = new int[]{manualLast2, manualLast, manualNow, manualSpace};
 
     /**
      * Creates a new object (platform or obstacle) to display on the screen
+     *
      * @author Michael Pointner
      */
     private void createObject() {
 
-        if(randomGeneration) {
+        if (randomGeneration) {
             if (random == null) {
                 random = new Random();
             }
@@ -531,46 +556,46 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             do {
                 generieren = random.nextInt(randomModulo);
 
-            } while(oldGenerieren == generieren); // TODO Sollen 2 Gleiche Objekte hintereinander kommen?
+            } while (oldGenerieren == generieren); // TODO Sollen 2 Gleiche Objekte hintereinander kommen?
         } else {
             generieren = manualArray[manualGenerationCounter % manualArray.length];
         }
 
-        if(generieren == CLOUD) {
+        if (generieren == CLOUD) {
 
-            float distanceLast          = Cloud.getMinDistance(last, last2, last3);
-            float distanceSame          = Cloud.getMinDistanceSameRel();
+            float distanceLast = Cloud.getMinDistance(last, last2, last3);
+            float distanceSame = Cloud.getMinDistanceSameRel();
 
-            Log.e("cloud distance", distanceLast+"      "+distanceSame);
+            Log.e("cloud distance", distanceLast + "      " + distanceSame);
 
             newCloud(Math.max(distanceLast, distanceSame));
         }
-        if(generieren == BIRD) {
+        if (generieren == BIRD) {
 
-            float distanceLast          = Bird.getMinDistance(last, last2, last3);
-            float distanceSame          = Bird.getMinDistanceSameRel();
+            float distanceLast = Bird.getMinDistance(last, last2, last3);
+            float distanceSame = Bird.getMinDistanceSameRel();
 
-            Log.e("bird distance", distanceLast+"      "+distanceSame);
+            Log.e("bird distance", distanceLast + "      " + distanceSame);
 
             newBird(Math.max(distanceLast, distanceSame));
         }
-        if(generieren == MOUNTAIN) {
+        if (generieren == MOUNTAIN) {
 
-            float distanceLast          = Mountain.getMinDistance(last, last2, last3);
-            float distanceSame          = Mountain.getMinDistanceSameRel();
+            float distanceLast = Mountain.getMinDistance(last, last2, last3);
+            float distanceSame = Mountain.getMinDistanceSameRel();
 
-            Log.e("mountain distance", distanceLast+"      "+distanceSame);
+            Log.e("mountain distance", distanceLast + "      " + distanceSame);
 
             newMountain(Math.max(distanceLast, distanceSame));
         }
-        if(generieren == PLATFORM) {
+        if (generieren == PLATFORM) {
 
-            float distanceLast          = Platform.getMinDistance(last, last2, last3);
-            float distanceSame          = Platform.getMinDistanceSameRel();
+            float distanceLast = Platform.getMinDistance(last, last2, last3);
+            float distanceSame = Platform.getMinDistanceSameRel();
 
-            if(distanceLast < distanceSame) return;
+            if (distanceLast < distanceSame) return;
 
-            Log.e("platform distance", distanceLast+"      "+distanceSame);
+            Log.e("platform distance", distanceLast + "      " + distanceSame);
 
             newPlatform(distanceLast);
         }
@@ -580,6 +605,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Creates a new platform
+     *
      * @param x X coordinate
      * @author Michael Pointner
      */
@@ -588,12 +614,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Platform.setLastSameObject(platform);
         addObject(platform);
 
-        House house = new House(x+ 0.2f);
+        House house = new House(x + 0.2f);
         addObject(house);
     }
 
     /**
      * Creates a new mountain
+     *
      * @param x X coordinate
      * @author Michael Pointner
      */
@@ -605,6 +632,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Creates a new bird
+     *
      * @param x X coordinate
      * @author Michael Pointner
      */
@@ -616,6 +644,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Creates a new cloud
+     *
      * @param x X coordinate
      * @author Michael Pointner
      */
@@ -627,20 +656,22 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Adds a new object
+     *
      * @param obj Object
      * @author Michael Pointner
      */
-	private void addObject(MoveableObject obj) {
-		last3 = last2;
-		last2 = last;
-		last = obj;
-		objects.add(obj);
-	}
+    private void addObject(MoveableObject obj) {
+        last3 = last2;
+        last2 = last;
+        last = obj;
+        objects.add(obj);
+    }
 
     /**
      * Old method to create objects by loading them from a level file
-     * @deprecated This is the old method to create objects
+     *
      * @author Michael Pointner
+     * @deprecated This is the old method to create objects
      */
     private void createOldObjects() {
         try {
@@ -652,36 +683,45 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             String line;
             while ((line = buffreader.readLine()) != null) {
-                if(line.startsWith(" ") || line.length() == 0 || line.startsWith("//")) continue;
+                if (line.startsWith(" ") || line.length() == 0 || line.startsWith("//")) continue;
                 String[] att = line.split(" ");
                 String name = att[0];
                 String flo = att[1].trim();
                 float pos = Float.valueOf(flo).floatValue();
 
                 switch (name) {
-                    case "Mountain": objects.add(new Mountain(pos)); break;
-                    case "Cloud": objects.add(new Cloud(pos)); break;
-                    case "Bird": objects.add(new Bird(pos)); break;
-                    case "Platform": objects.add(new Platform(pos)); objects.add(new House(pos+0.2f)); break;
+                    case "Mountain":
+                        objects.add(new Mountain(pos));
+                        break;
+                    case "Cloud":
+                        objects.add(new Cloud(pos));
+                        break;
+                    case "Bird":
+                        objects.add(new Bird(pos));
+                        break;
+                    case "Platform":
+                        objects.add(new Platform(pos));
+                        objects.add(new House(pos + 0.2f));
+                        break;
                 }
 
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Removes objects that are out of the scene
+     *
      * @author Michael Pointner
      */
     private void removeObjects() {
         objectsLocked = true;
         Iterator<MoveableObject> iterator = objects.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             MoveableObject obj = iterator.next();
-            if(obj.removeable()) {
+            if (obj.removeable()) {
                 iterator.remove();
             }
         }
@@ -690,6 +730,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Resets the last object variables
+     *
      * @author Michael Pointner
      */
     public void resetLastObjects() {
@@ -705,6 +746,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Returns the screen size of the device
+     *
      * @return screen size
      * @author Michael Pointner
      */
@@ -718,6 +760,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Returns the actor of the game
+     *
      * @return Returns the actor object
      * @author Simon Reisinger
      */

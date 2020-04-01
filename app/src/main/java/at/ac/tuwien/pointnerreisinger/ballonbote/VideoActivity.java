@@ -3,16 +3,15 @@ package at.ac.tuwien.pointnerreisinger.ballonbote;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.VideoView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener, View.OnClickListener, View.OnTouchListener {
 
@@ -21,6 +20,7 @@ public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCo
 
     /**
      * Creates the Activity
+     *
      * @param savedInstanceState Saved instance state
      * @author Simon Reisinger
      */
@@ -38,8 +38,8 @@ public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCo
         setContentView(R.layout.activity_video);
 
         //VideoView holen
-        myVideoView=(VideoView)findViewById(R.id.videoView);
-        skip=(ImageButton)findViewById(R.id.skipButton);
+        myVideoView = (VideoView) findViewById(R.id.videoView);
+        skip = (ImageButton) findViewById(R.id.skipButton);
 
         //Video Uri setzen
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video);
@@ -60,6 +60,7 @@ public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCo
 
     /**
      * Skips the the next activity when the video ended
+     *
      * @param mp MediaPlayer
      * @author Simon Reisinger
      */
@@ -70,6 +71,7 @@ public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCo
 
     /**
      * Click event of the skip button
+     *
      * @param v View
      * @author Simon Reisinger
      */
@@ -78,23 +80,24 @@ public class VideoActivity extends AppCompatActivity implements MediaPlayer.OnCo
         skipVideo();
     }
 
-    private void skipVideo(){
+    private void skipVideo() {
         startActivity(new Intent(this, MainActivity.class));
 
     }
 
     /**
      * Called on touch events
-     * @param v View
+     *
+     * @param v     View
      * @param event MotionEvent
      * @return touch event performed
      * @author Simon Reisinger
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             skip.setImageResource(R.drawable.skiponclick);
-        } else if(event.getAction() == MotionEvent.ACTION_UP){
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
             skip.setImageResource(R.drawable.skip);
         }
         return false;

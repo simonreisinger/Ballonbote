@@ -2,23 +2,20 @@ package at.ac.tuwien.pointnerreisinger.ballonbote;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,8 +23,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * Contains the Game Canvas
+ *
  * @author Simon Reisinger
  */
 public class GameActivity extends AppCompatActivity implements SensorEventListener, SoundPool.OnLoadCompleteListener {
@@ -56,6 +56,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Creates the Class
+     *
      * @param savedInstanceState last state of the activity
      * @author Simon Reisinger
      */
@@ -79,10 +80,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Loads the buttons
+     *
      * @author Simon Reisinger
      */
     private void loadButtons() {
-        game = (GameSurfaceView)findViewById(R.id.drawing_area);
+        game = (GameSurfaceView) findViewById(R.id.drawing_area);
         playButtonStart = (ImageButton) findViewById(R.id.playButtonStart);
         playButtonStartLevelText = (TextView) findViewById(R.id.playButtonStartLevelText);
         packageDeliver1 = (ImageView) findViewById(R.id.packageDeliver1);
@@ -101,6 +103,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Loads the services
+     *
      * @author Michael Pointner
      */
     private void loadServices() {
@@ -109,7 +112,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             gyroAvailable = false;
         }
 
-        if(gyroAvailable) {
+        if (gyroAvailable) {
             mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
         }
 
@@ -122,14 +125,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Unloads the services
+     *
      * @author Michael Pointner
      */
     private void unloadServices() {
-        if(gyroAvailable) {
+        if (gyroAvailable) {
             mSensorManager.unregisterListener(this);
         }
 
-        if(GameLoop.getVolume() == GameLoop.VolumeOn) {
+        if (GameLoop.getVolume() == GameLoop.VolumeOn) {
             mySoundPool.autoPause();
         }
         mySoundPool.release();
@@ -137,22 +141,24 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Starts the music
+     *
      * @param soundPool SoundPool
-     * @param sampleId SampleId
-     * @param status Status
+     * @param sampleId  SampleId
+     * @param status    Status
      * @author Michael Pointner
      */
     @Override
     public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
         mySoundPool.play(sampleId, 1, 1, 1, -1, 1.0f);
 
-        if(GameLoop.getVolume() == GameLoop.VolumeMute) {
+        if (GameLoop.getVolume() == GameLoop.VolumeMute) {
             mySoundPool.autoPause();
         }
     }
 
     /**
      * Activity Start
+     *
      * @author Simon Reisinger
      */
     @Override
@@ -164,6 +170,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Activity Resume
+     *
      * @author Simon Reisinger
      */
     @Override
@@ -179,6 +186,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Activity Pause
+     *
      * @author Michael Pointner
      */
     @Override
@@ -186,7 +194,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         super.onPause();
 
         GameLoop loop = GameSurfaceView.getLoop();
-        if(!loop.getLanded()) {
+        if (!loop.getLanded()) {
             game.pause();
         }
 
@@ -199,6 +207,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Activity Stop
+     *
      * @author Simon Reisinger
      */
     @Override
@@ -210,21 +219,27 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Activity Destroy
+     *
      * @author Simon Reisinger
      */
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        if(GameSurfaceView.getLoop().getLifes() == 0) {
+        if (GameSurfaceView.getLoop().getLifes() == 0) {
             GameLoop.resetValuesBeginning();
         }
+
+        GameSurfaceView.getLoop().setRunning(false);
+
+        game.endGame();
 
         Log.e("GameActivity", "onDestroy");
     }
 
     /**
      * Updates the rotation sensor
+     *
      * @param event SensorEvent
      * @author Michael Pointner
      */
@@ -234,8 +249,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Accuracy of the sensor changed
+     *
      * @param sensor Sensor
-     * @param i Accuracy
+     * @param i      Accuracy
      * @author Michael Pointner
      */
     @Override
@@ -244,14 +260,15 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Saves the score
+     *
      * @author Michael Pointner
      */
     private void saveScore() {
         String username = nameTextField.getText().toString();
-        if(username.length() <= 0 || username == getString(R.string.nameInputHint)) {
+        if (username.length() <= 0 || username == getString(R.string.nameInputHint)) {
             username = getString(R.string.nameDefault);
         }
-        int score = (int)GameSurfaceView.getLoop().getScore();
+        int score = (int) GameSurfaceView.getLoop().getScore();
 
         ContentValues values = new ContentValues();
         values.put(ScoreContract.ScoreEntry.COLUMN_NAME_USERNAME, username);
@@ -262,6 +279,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Pauses the game
+     *
      * @param view View
      * @author Michael Pointner
      */
@@ -271,12 +289,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Plays the game
+     *
      * @param view View
      * @author Michael Pointner
      */
     public void play(View view) {
         GameLoop loop = GameSurfaceView.getLoop();
-        if(loop.getLifes() > 0) {
+        if (loop.getLifes() > 0) {
             loop.setLanded(true);
         }
         game.startMovement(view.getY());
@@ -286,6 +305,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Restarts the game from the last platform
+     *
      * @param view View
      * @author Michael Pointner
      */
@@ -295,6 +315,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Restarts the game from the beginning
+     *
      * @param view View
      * @author Michael Pointner
      */
@@ -305,12 +326,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Continues the game
+     *
      * @param view View
      * @author Michael Pointner
      */
     public void continueGame(View view) {
         GameLoop loop = GameSurfaceView.getLoop();
-        if(loop != null) {
+        if (loop != null) {
             loop.setPaused(false);
             loop.setLanded(false);
 
@@ -320,11 +342,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Changes the volume of the game
+     *
      * @param view View
      * @author Michael Pointner
      */
     public void changeVolumeGame(View view) {
-        if(GameLoop.getVolume() == GameLoop.VolumeOn) {
+        if (GameLoop.getVolume() == GameLoop.VolumeOn) {
             muteVolumeButton.setBackgroundResource(R.drawable.mute);
             GameLoop.setVolume(GameLoop.VolumeMute);
             mySoundPool.autoPause();
@@ -337,10 +360,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Initializes the volume button
+     *
      * @author Michael Pointner
      */
     public void initVolumeGame() {
-        if(GameLoop.getVolume() == GameLoop.VolumeOn) {
+        if (GameLoop.getVolume() == GameLoop.VolumeOn) {
             muteVolumeButton.setBackgroundResource(R.drawable.volume);
         } else {
             muteVolumeButton.setBackgroundResource(R.drawable.mute);
@@ -349,11 +373,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Changes the control of the game
+     *
      * @param view View
      * @author Michael Pointner
      */
     public void changeControlGame(View view) {
-        if(GameLoop.getControl() == GameLoop.ControlFinger) {
+        if (GameLoop.getControl() == GameLoop.ControlFinger) {
             controlGameButton.setBackgroundResource(R.drawable.controltilt);
             GameLoop.setControl(GameLoop.ControlTilt);
         } else {
@@ -364,10 +389,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Initializes the control button
+     *
      * @author Michael Pointner
      */
     public void initControlGame() {
-        if(GameLoop.getControl() == GameLoop.ControlFinger) {
+        if (GameLoop.getControl() == GameLoop.ControlFinger) {
             controlGameButton.setBackgroundResource(R.drawable.controlfinger);
         } else {
             controlGameButton.setBackgroundResource(R.drawable.controltilt);
@@ -376,7 +402,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the play button invokely
-     * @param display Display
+     *
+     * @param display   Display
      * @param levelText Level text
      * @author Michael Pointner
      */
@@ -387,6 +414,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the pause button invokely
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -396,6 +424,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the pause menu invokely
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -405,6 +434,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the restart button invokely
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -414,6 +444,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the level score text invokely
+     *
      * @param text Level score text
      * @author Michael Pointner
      */
@@ -423,6 +454,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the game over menu invokely
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -432,6 +464,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the loading icon invokely
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -441,6 +474,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the package deliver image invokely
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -452,6 +486,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Message handler for the invoking
+     *
      * @author Michael Pointner
      */
     private class MessageHandler implements Runnable {
@@ -469,6 +504,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         /**
          * Constructor for boolean value
+         *
          * @param dest Destination
          * @param bool Boolean value
          * @author Michael Pointner
@@ -480,6 +516,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         /**
          * Constructor for String value
+         *
          * @param dest Destination
          * @param text String value
          * @author Michael Pointner
@@ -491,6 +528,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         /**
          * Constructor for boolean and String values
+         *
          * @param dest Destination
          * @param bool Boolean value
          * @param text String value
@@ -504,25 +542,43 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         /**
          * Runnable methode for invoke excecution
+         *
          * @author Michael Pointner
          */
         public void run() {
             switch (dest) {
-                case PlayButtonStartVisibility: displayPlayButtonStart(bool, text); break;
-                case PauseButtonVisibility: displayPauseButton(bool); break;
-                case PauseMenuVisibility: displayPauseMenu(bool); break;
-                case RestartButtonVisibility: displayRestartButton(bool); break;
-                case TextLevelScore: setTextLevelScore(text); break;
-                case GameOverMenuVisibility: displayGameOverMenu(bool); break;
-                case LoadingIconVisibility: displayLoadingIcon(bool); break;
-                case PackageDeliverVisibility: displayPackageDeliver(bool); break;
+                case PlayButtonStartVisibility:
+                    displayPlayButtonStart(bool, text);
+                    break;
+                case PauseButtonVisibility:
+                    displayPauseButton(bool);
+                    break;
+                case PauseMenuVisibility:
+                    displayPauseMenu(bool);
+                    break;
+                case RestartButtonVisibility:
+                    displayRestartButton(bool);
+                    break;
+                case TextLevelScore:
+                    setTextLevelScore(text);
+                    break;
+                case GameOverMenuVisibility:
+                    displayGameOverMenu(bool);
+                    break;
+                case LoadingIconVisibility:
+                    displayLoadingIcon(bool);
+                    break;
+                case PackageDeliverVisibility:
+                    displayPackageDeliver(bool);
+                    break;
             }
         }
     }
 
     /**
      * Displays the play button
-     * @param display Display
+     *
+     * @param display   Display
      * @param levelText Level text
      * @author Michael Pointner
      */
@@ -535,6 +591,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the pause button
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -545,6 +602,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the pause menu
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -554,11 +612,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.pauseMenu);
         linearLayout.setVisibility(display ? View.VISIBLE : View.GONE);
 
-        Log.e("GameActivity", "displayPauseMenu:"+display);
+        Log.e("GameActivity", "displayPauseMenu:" + display);
     }
 
     /**
      * Displays the restart button
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -569,6 +628,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the level score text
+     *
      * @param text Level score text
      * @author Michael Pointner
      */
@@ -578,6 +638,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the game over menu
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -589,11 +650,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the game over animations
+     *
      * @param display display status
      * @author Michael Pointner
      */
     private void displayGameOverAnimation(boolean display) {
-        if(display) {
+        if (display) {
             Animation scale = AnimationUtils.loadAnimation(getBaseContext(), R.anim.scale);
             Animation rotate = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
             gameoverAnimation.startAnimation(scale);
@@ -605,6 +667,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the loading icon
+     *
      * @param display Display
      * @author Michael Pointner
      */
@@ -614,16 +677,17 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Displays the package deliver image
+     *
      * @param display Display
      * @author Michael Pointner
      */
     private void displayPackageDeliver(boolean display) {
         packageDeliver1.setVisibility(display ? View.VISIBLE : View.GONE);
-        if(display) {
+        if (display) {
             packageDeliver2.setVisibility(View.GONE);
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-                    if(packageDeliver1.getVisibility() == View.VISIBLE && packageDeliver2.getVisibility() == View.GONE) {
+                    if (packageDeliver1.getVisibility() == View.VISIBLE && packageDeliver2.getVisibility() == View.GONE) {
                         packageDeliver1.setVisibility(View.GONE);
                         packageDeliver2.setVisibility(View.VISIBLE);
                     }
@@ -631,7 +695,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             }, 500);
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-                    if(packageDeliver2.getVisibility() == View.VISIBLE) {
+                    if (packageDeliver2.getVisibility() == View.VISIBLE) {
                         packageDeliver1.setVisibility(View.GONE);
                         packageDeliver2.setVisibility(View.GONE);
                     }
@@ -644,6 +708,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Increases the game speed manually
+     *
      * @param view View
      * @author Michael Pointner
      */
@@ -653,6 +718,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     /**
      * Increases the lifes manually
+     *
      * @param view View
      * @author Michael Pointner
      */

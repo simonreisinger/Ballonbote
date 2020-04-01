@@ -2,6 +2,7 @@ package at.ac.tuwien.pointnerreisinger.ballonbote;
 
 /**
  * Score item
+ *
  * @author Michael Pointner
  */
 public class Score {
@@ -12,8 +13,9 @@ public class Score {
 
     /**
      * Initializes the score
+     *
      * @param username Username
-     * @param score Score
+     * @param score    Score
      * @author Michael Pointner
      */
     public Score(String username, int score) {
@@ -23,6 +25,7 @@ public class Score {
 
     /**
      * Returns the id
+     *
      * @return Id
      * @author Michael Pointner
      */
@@ -32,6 +35,7 @@ public class Score {
 
     /**
      * Sets the id
+     *
      * @param id Id
      * @author Michael Pointner
      */
@@ -41,6 +45,7 @@ public class Score {
 
     /**
      * Returns the username
+     *
      * @return Username
      * @author Michael Pointner
      */
@@ -50,6 +55,7 @@ public class Score {
 
     /**
      * Sets the username
+     *
      * @param username Username
      * @author Michael Pointner
      */
@@ -59,6 +65,7 @@ public class Score {
 
     /**
      * Returns the score
+     *
      * @return Score
      * @author Michael Pointner
      */
@@ -68,6 +75,7 @@ public class Score {
 
     /**
      * Sets the score
+     *
      * @param score Score
      * @author Michael Pointner
      */
@@ -77,6 +85,7 @@ public class Score {
 
     /**
      * Returns a String represantation of the object
+     *
      * @return String represantation
      * @author Michael Pointner
      */

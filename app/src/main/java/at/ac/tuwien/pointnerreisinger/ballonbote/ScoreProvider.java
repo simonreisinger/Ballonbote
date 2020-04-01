@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,6 +33,7 @@ public class ScoreProvider extends ContentProvider {
             + "/" + BASE_PATH);
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     static {
         sURIMatcher.addURI(AUTHORITY, BASE_PATH, SCORE); //Matches a content URI for all rows in table
         sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", SCORE_ID); //Matches a content URI for single rows in table
@@ -44,6 +43,7 @@ public class ScoreProvider extends ContentProvider {
     /**
      * Initialize your provider. The Android system calls this method immediately after it creates your provider.
      * Notice that your provider is not created until a ContentResolver object tries to access it.
+     *
      * @author Michael Pointner
      */
     @Override
@@ -56,11 +56,12 @@ public class ScoreProvider extends ContentProvider {
      * Retrieve data from your provider.
      * Use the arguments to select the table to query, the rows and columns to return, and the sort order of the result.
      * Return the data as a Cursor object.
-     * @param projection Projection
-     * @param selection Selection
+     *
+     * @param projection    Projection
+     * @param selection     Selection
      * @param selectionArgs SelectionArgs
-     * @param sortOrder SortOrder
-     * @param uri Uri
+     * @param sortOrder     SortOrder
+     * @param uri           Uri
      * @author Michael Pointner
      */
     @Override
@@ -101,6 +102,7 @@ public class ScoreProvider extends ContentProvider {
 
     /**
      * Returns the type
+     *
      * @param uri Uri
      * @return Type
      * @author Michael Pointner
@@ -116,7 +118,8 @@ public class ScoreProvider extends ContentProvider {
      * Insert a new row into your provider. Use the arguments to select the destination
      * table and to get the column values to use.
      * Return a content URI for the newly-inserted row.
-     * @param uri Uri
+     *
+     * @param uri    Uri
      * @param values Values
      * @author Michael Pointner
      */
@@ -177,9 +180,10 @@ public class ScoreProvider extends ContentProvider {
 
     /**
      * Update
-     * @param uri Uri
-     * @param values Values
-     * @param selection Selection
+     *
+     * @param uri           Uri
+     * @param values        Values
+     * @param selection     Selection
      * @param selectionArgs Selection arguments
      * @return Identifier
      * @author Michael Pointner
@@ -191,13 +195,14 @@ public class ScoreProvider extends ContentProvider {
 
     /**
      * Check columns
+     *
      * @param projection Projection
      * @author Michael Pointner
      */
     private void checkColumns(String[] projection) {
-        String[] available = { ScoreContract.ScoreEntry._ID,
+        String[] available = {ScoreContract.ScoreEntry._ID,
                 ScoreContract.ScoreEntry.COLUMN_NAME_USERNAME,
-                ScoreContract.ScoreEntry.COLUMN_NAME_SCORE };
+                ScoreContract.ScoreEntry.COLUMN_NAME_SCORE};
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
             HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(available));
